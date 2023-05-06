@@ -1,15 +1,13 @@
+/* CSS for form */
 .info {
     display: flex;
 }
 .left {
-    margin-right: 30px;
-}
-.right {
-    margin-left: 30px;
+    margin-right: 80px;
 }
 
 .left div, .right div {
-    margin-bottom: 10px;
+    margin-bottom: 20px;
 }
 
 .left label, .right label {
@@ -18,10 +16,30 @@
 }
 
 .left input, .right input {
-    padding: 8px 15px;
+    padding: 8px 40px;
 }
 
-.func_btn input, .func_btn input {
+.func_btn input{
     padding: 5px 30px;
-    margin-left: 15px;
+    margin: 20px 20px;
+}
+
+.error {
+    color: red;
+    text-align: right;
+}
+
+/* CSS for table */
+.studentDAO {
+    width: 100%;
+}
+table {
+    width: 70%;
+    margin: 20px auto;
+}
+table th {
+    border-bottom: 2px solid black;
+}
+tbody tr td{
+    text-align: center;
 }
