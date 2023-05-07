@@ -1,30 +1,72 @@
 <?php
+// save the data of the file into the student array
+$fname = "assets/StudentData.txt";                        // file name
+$farray = file($fname);                                   // reading file into an array
+$students = array();                                      // empty array
+$keys = ['id', 'name', 'age', 'grade'];                   // keys array
+for($i = 1; $i < count($farray); $i++){                   // loop from line 2
+    $values = explode(',', $farray[$i]);                  // convert string to array
+    array_push($students, array_combine($keys, $values)); // combine array $keys and array $values into new array and insert into array $students
+}
+
+// error
 $student = ['id' => '', 'name' => '', 'age' => '', 'grade' => ''];
 $errors = ['id' => '', 'name' => '', 'age' => '', 'grade' => ''];
 $message = '';
 
-if($_SERVER['REQUEST_METHOD'] == 'POST'){                   // if form submitted
-    $filters['age']['filter'] = FILTER_VALIDATE_INT;        // integer filter
-    $filters['grade']['filter'] = FILTER_VALIDATE_INT;      // integer filter
-    $student = filter_input_array(INPUT_POST, $filters);    // validate data
+if($_SERVER['REQUEST_METHOD'] == 'POST'){                                      // if form submitted
+    $filters['age']['filter'] = FILTER_VALIDATE_INT;                           // integer filter
+    $filters['grade']['filter'] = FILTER_VALIDATE_INT;                         // integer filter
+    $student = filter_input_array(INPUT_POST, $filters);                       // validate data
     
     // Create error messages
-    $errors['age'] = $student['age'] ? '' : 'Age must be integer';
-    $errors['grade'] = $student['grade'] ? '' : 'Grade must be integer';
-    $invalid = implode($errors);                            // Join error messages
+    $exists = false;                                                           // duplicate state variable
+    for($i = 0; $i < count($students); $i++){
+        if($students[$i]['id'] == $_POST['id']){                               // duplicate check
+            $exists = true;
+            break;
+        }
+    }
+    if(empty($_POST['id'])){                                                 // id error
+        $errors['id'] = 'Please enter your ID';
+    } else if ($exists){
+        $errors['id'] = 'ID already exists';
+    } else {
+        $errors['id'] = '';
+    }
+          
+
+    if(empty($_POST['age'])){                                                 // age error
+        $errors['age'] = 'Please enter your age';
+    } else if ($student['age'] == NULL){
+        $errors['age'] = 'Age must be integer';
+    } else {
+        $errors['age'] = '';
+    }
+
+    $errors['name'] = !empty($_POST['name']) ? '' : 'Please enter your name';   // name error
+
+    if(empty($_POST['grade'])){                                               // grade error
+        $errors['grade'] = 'Please enter your grade';
+    } else if ($student['grade'] == NULL){
+        $errors['grade'] = 'Grade must be integer';
+    } else {
+        $errors['grade'] = '';
+    }
+
+    $invalid = implode($errors);                                 // Join error messages
 
     if ($invalid) {                                              // If there are errors
         $message = 'Please correct the following errors:';       // Do not process
     } else {                                                     // Otherwise
         $message = 'Create success!';                            // Create success
+        $data = "\n" . $_POST['id'] . "," . $_POST['name'] . "," . $_POST['age'] . "," . $_POST['grade'];
+        $fp = fopen('assets/StudentData.txt', 'a+') or die("Unable to open file!");     //open file for read/write (a+: don't delete existing data, add at the end)
+        fwrite($fp, $data);
+        fclose($fp);
     }
 }
 
-    $students = [
-      ['id' => '1', 'name' => 'Nguyễn Văn A', 'age' => 22, 'grade' => 6],
-      ['id' => '2', 'name' => 'Trần Thị B', 'age' => 20, 'grade' => 8],
-      ['id' => '3', 'name' => 'Phạm Văn C', 'age' => 25, 'grade' => 4]
-    ];
 ?>
 
 <!DOCTYPE html>
@@ -119,25 +161,3 @@ if($_SERVER['REQUEST_METHOD'] == 'POST'){                   // if form submitted
 </body>
 </html>
 
-
-<?php
-   $fp = fopen('assets/StudentData.txt', 'a+') or die("Unable to open file!");  //open file for read/write (a+: don't delete existing data, add at the end)
-   echo "<pre>";
-   print_r(fread($fp, filesize("assets/Studentdata.txt")));
-   
-   if($_SERVER['REQUEST_METHOD'] == 'POST'){    // if form submitted
-        $id = $_POST["id"];                     // get id
-        fwrite($fp, $id);                       // write $id to $fp                   
-        $name = $_POST["name"];                 // get name
-        fwrite($fp, $name);                     // write $name to $fp 
-        $age = $_POST["age"];                   // get age
-        fwrite($fp, $age);                      // write $age to $fp 
-        $grade = $_POST["grade"];               // get grade
-        fwrite($fp, $grade);                    // write $grade to $fp
-   }
-
-   echo "<pre>";
-   print_r(fread($fp, filesize("assets/Studentdata.txt")));
-
-   fclose($fp);
-?>
