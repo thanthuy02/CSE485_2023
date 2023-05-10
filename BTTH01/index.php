@@ -3,14 +3,13 @@ require_once 'models/StudentDAO.php';
 
 $studentDAO = new StudentDAO();
 
-// get data from textfile 
+// save the data of the file into the studentDAO array
 $fname = "assets/StudentData.txt";                        // file name
 $farray = file($fname);                                   // reading file into an array
 $students = array();                                      // empty array
 $keys = ['id', 'name', 'age', 'grade'];                   // keys array
 for($i = 1; $i < count($farray); $i++){                   // loop from line 2
     $values = explode(',', $farray[$i]);                  // convert string to array
-    array_push($students, array_combine($keys, $values)); // combine array $keys and array $values into new array and insert into array $students
     $student = new Student($values[0], $values[1], $values[2], $values[3]);   // create a new student
     $studentDAO->create($student);   
 }
