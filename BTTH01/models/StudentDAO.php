@@ -12,6 +12,17 @@ class StudentDAO {
         $this->students[] = $student;
     }
 
+    // save student's data into text file
+    public function saveStudent($student, $filename) {
+        // Convert the student object to a comma-separated string
+        $data = implode(',', array($student->id, $student->name, $student->age, $student->grade));
+
+        // Open the file for writing and append the student data to it
+        $file = fopen($filename, 'a');
+        fwrite($file, $data . "\n");
+        fclose($file);
+    }
+
      //display student list on table
     public function getAll() {
         return $this->students;
