@@ -1,10 +1,15 @@
 <?php
-
+include 'Student.php';
 class StudentDAO {
     public array $students;
 
     public function __construct(array $students){
         $this -> students[] = $student;
+    }
+
+    // create a student
+    public function create(Student $student){
+        $this->students[] = $student;
     }
 
      //display student list on table
@@ -15,12 +20,13 @@ class StudentDAO {
     //search a student with id
     public function read($id) {
         foreach ($this->students as $student) {
-            if ($student['id'] == $id) {
+            if ($student->getId() == $id) {
                 return $student;
             }
         }
         return null;
     }
+
 
     public function update($id, Student $newStudent) {
         foreach ($this->students as &$student) {
