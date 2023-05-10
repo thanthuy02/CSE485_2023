@@ -161,5 +161,6 @@ if($_SERVER['REQUEST_METHOD'] == 'POST'){                                      /
         </table>
     </div>    
     <!-- End: Student list -->
+    
 </body>
 </html>
