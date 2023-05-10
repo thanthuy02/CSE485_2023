@@ -13,64 +13,6 @@ for($i = 1; $i < count($farray); $i++){                   // loop from line 2
 }
 
 $students = $studentDAO->getAll();
-
-// error
-$student = ['id' => '', 'name' => '', 'age' => '', 'grade' => ''];
-$errors = ['id' => '', 'name' => '', 'age' => '', 'grade' => ''];
-$message = '';
-
-if($_SERVER['REQUEST_METHOD'] == 'POST'){                                      // if form submitted
-    $filters['age']['filter'] = FILTER_VALIDATE_INT;                           // integer filter
-    $filters['grade']['filter'] = FILTER_VALIDATE_INT;                         // integer filter
-    $student = filter_input_array(INPUT_POST, $filters);                       // validate data
-    
-    // Create error messages
-    $exists = false;                                                           // duplicate state variable
-    foreach ($students as $st){
-        if($st->getId() == $_POST['id']){
-            $exists = true;
-            break;
-        }
-    }
-    if(empty($_POST['id'])){                                                 // id error
-        $errors['id'] = 'Please enter your ID';
-    } else if ($exists){
-        $errors['id'] = 'ID already exists';
-    } else {
-        $errors['id'] = '';
-    }
-          
-
-    if(empty($_POST['age'])){                                                 // age error
-        $errors['age'] = 'Please enter your age';
-    } else if ($student['age'] == NULL){
-        $errors['age'] = 'Age must be integer';
-    } else {
-        $errors['age'] = '';
-    }
-
-    $errors['name'] = !empty($_POST['name']) ? '' : 'Please enter your name';   // name error
-
-    if(empty($_POST['grade'])){                                               // grade error
-        $errors['grade'] = 'Please enter your grade';
-    } else if ($student['grade'] == NULL){
-        $errors['grade'] = 'Grade must be integer';
-    } else {
-        $errors['grade'] = '';
-    }
-
-    $invalid = implode($errors);                                 // Join error messages
-
-    if ($invalid) {                                              // If there are errors
-        $message = 'Please correct the following errors:';       // Do not process
-    } else {                                                     // Otherwise
-        $message = 'Create success!';                            // Create success
-        $data = "\n" . $_POST['id'] . "," . $_POST['name'] . "," . $_POST['age'] . "," . $_POST['grade'];
-        $fp = fopen('assets/StudentData.txt', 'a+') or die("Unable to open file!");     //open file for read/write (a+: don't delete existing data, add at the end)
-        fwrite($fp, $data);
-        fclose($fp);
-    }
-}
 ?>
 
 <!DOCTYPE html>
@@ -79,88 +21,46 @@ if($_SERVER['REQUEST_METHOD'] == 'POST'){                                      /
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="css/style.css">
-    <title>Student Management</title> 
+    <title>Student List</title> 
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ" crossorigin="anonymous">
+    <style>
+        th, td {
+            text-align: center;
+        }
+    </style>
 </head>
 <body>
-    <h1>Create Students</h1>
-    <!-- Start: Student creation form -->
-    <form action="index.php" method="post">
-        <div class="info">
-            <div class="left">
-                <!-- id -->
-                <div>
-                    <label for="id">ID:</label>
-                    <input type="text" name="id" id="id" value="<?= $student['id'] ?>">
-                </div>
-                <!-- id error -->
-                <div class="error">
-                    <span><?= $errors['id'] ?></span>
-                </div>
-                <!-- name -->
-                <div>
-                    <label for="name">Name:</label>
-                    <input type="text" name="name" id="name"  value="<?= $student['name'] ?>">
-                </div>
-                 <!-- name error -->
-                 <div class="error">
-                    <span><?= $errors['name'] ?></span>
-                </div>
-            </div>
-        
-            <div class="right">
-                <!-- age -->
-                <div>
-                    <label for="age">Age:</label>
-                    <input type="text" name="age" id="age" value="<?= $student['age'] ?>">
-                </div>
-                <!-- age error -->
-                <div class="error">
-                    <span><?= $errors['age'] ?></span>
-                </div>
-                <!-- grade -->
-                <div>
-                    <label for="grade">Grade:</label>
-                    <input type="text" name="grade" id="grade"  value="<?= $student['grage'] ?>">
-                </div>
-                <!-- grade error -->
-                <div class="error">
-                    <span><?= $errors['grade'] ?></span>
-                </div>
-            </div>
+    <div class="container-fluid">
+        <div class="d-flex align-items-center my-4">
+            <h1>Student List</h1>
+            <a href="create.php" class="btn btn-success ms-auto p-3">Add new student</a>
         </div>
 
-        <div class="func_btn">
-            <input type="submit" value="Save">
-        </div>
-    </form>
-    <!-- End: Student creation form -->
-
-    <!-- Start: Student list -->
-    <h1>Student List</h1>
-    <div class="studentDAO">
-        <table>
-            <thead>
+        <div class="studentDAO">
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                    <th>ID</th>
+                    <th>Name</th>
+                    <th>Age</th>
+                    <th>Grade</th>
+                    </tr>
+                </thead>
+                <tbody>
+                <?php 
+                    foreach ($students as $stu) { ?>
                 <tr>
-                <th>ID</th>
-                <th>Name</th>
-                <th>Age</th>
-                <th>Grade</th>
+                    <td><?= $stu->getId() ?></td>
+                    <td><?= $stu->getName() ?></td>
+                    <td><?= $stu->getAge() ?></td>
+                    <td><?= $stu->getGrade() ?></td>
                 </tr>
-            </thead>
-            <tbody>
-            <?php foreach ($students as $stu) { ?>
-            <tr>
-                <td><?= $stu->getId() ?></td>
-                <td><?= $stu->getName() ?></td>
-                <td><?= $stu->getAge() ?></td>
-                <td><?= $stu->getGrade() ?></td>
-            </tr>
-        <?php } ?>
-            </tbody>
-        </table>
-    </div>    
-    <!-- End: Student list -->
+            <?php } ?>
+                </tbody>
+            </table>
+        </div> 
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ENjdO4Dr2bkBIFxQpeoTz1HIcje39Wm4jDKdf19U8gI4ddQ3GYNS7NTKfAdVQSZe" crossorigin="anonymous"></script>   
     
 </body>
 </html>
