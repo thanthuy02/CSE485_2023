@@ -1,18 +1,13 @@
 <?php
 session_start();                                                         // create session 
 
-if(isset($_POST['cancel'])){
-    header("Location: index.php");
-}
-else
-{
     $errors = ['id' => '', 'name' => '', 'age' => '', 'grade' => ''];
     $errors['id'] = $_SESSION['error_id'];
     $errors['name'] = $_SESSION['error_name'];
     $errors['age'] = $_SESSION['error_age'];
     $errors['grade'] = $_SESSION['error_grade'];
     // header("Location: save.php");
-}
+
 
 session_unset();                                                         // delete all variables stored in session
 ?>
