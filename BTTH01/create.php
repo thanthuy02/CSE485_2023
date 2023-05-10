@@ -1,11 +1,18 @@
 <?php
 session_start();                                                         // create session 
 
-$errors = ['id' => '', 'name' => '', 'age' => '', 'grade' => ''];
-$errors['id'] = $_SESSION['error_id'];
-$errors['name'] = $_SESSION['error_name'];
-$errors['age'] = $_SESSION['error_age'];
-$errors['grade'] = $_SESSION['error_grade'];
+if(isset($_POST['cancel'])){
+    header("Location: index.php");
+}
+else
+{
+    $errors = ['id' => '', 'name' => '', 'age' => '', 'grade' => ''];
+    $errors['id'] = $_SESSION['error_id'];
+    $errors['name'] = $_SESSION['error_name'];
+    $errors['age'] = $_SESSION['error_age'];
+    $errors['grade'] = $_SESSION['error_grade'];
+    // header("Location: save.php");
+}
 
 session_unset();                                                         // delete all variables stored in session
 ?>
@@ -60,9 +67,11 @@ session_unset();                                                         // dele
                 <span><?= $errors['grade'] ?></span>
             </div>
             <div class="d-flex justify-content-end">
-                <input type="submit" class="btn btn-primary px-3" value="Save">
-            </div>   
+                <input type="submit" class="btn btn-primary btn-lg px-3" name="save" value="Save"> 
+                <a href="index.php" class="btn btn-secondary btn-lg px-3 ms-2">Cancel</a>
+            </div>     
         </form>
+
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ENjdO4Dr2bkBIFxQpeoTz1HIcje39Wm4jDKdf19U8gI4ddQ3GYNS7NTKfAdVQSZe" crossorigin="anonymous"></script>
