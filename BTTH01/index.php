@@ -1,13 +1,18 @@
 <?php
-// save the data of the file into the student array
+require_once 'models/StudentDAO.php';
+
+$studentDAO = new StudentDAO();
+
+// save the data of the file into the studentDAO array
 $fname = "assets/StudentData.txt";                        // file name
 $farray = file($fname);                                   // reading file into an array
-$students = array();                                      // empty array
-$keys = ['id', 'name', 'age', 'grade'];                   // keys array
 for($i = 1; $i < count($farray); $i++){                   // loop from line 2
     $values = explode(',', $farray[$i]);                  // convert string to array
-    array_push($students, array_combine($keys, $values)); // combine array $keys and array $values into new array and insert into array $students
+    $student = new Student($values[0], $values[1], $values[2], $values[3]);   // create a new student
+    $studentDAO->create($student);   
 }
+
+$students = $studentDAO->getAll();
 
 // error
 $student = ['id' => '', 'name' => '', 'age' => '', 'grade' => ''];
@@ -66,7 +71,6 @@ if($_SERVER['REQUEST_METHOD'] == 'POST'){                                      /
         fclose($fp);
     }
 }
-
 ?>
 
 <!DOCTYPE html>
@@ -145,14 +149,14 @@ if($_SERVER['REQUEST_METHOD'] == 'POST'){                                      /
                 </tr>
             </thead>
             <tbody>
-                <?php for ($i = 0; $i < count($students); $i++): ?>
-                <tr>
-                    <td><?= $students[$i]['id'] ?></td>
-                    <td><?= $students[$i]['name'] ?></td>
-                    <td><?= $students[$i]['age'] ?></td>
-                    <td><?= $students[$i]['grade'] ?></td>
-                </tr>
-                <?php endfor; ?>
+            <?php foreach ($students as $stu) { ?>
+            <tr>
+                <td><?= $stu->getId() ?></td>
+                <td><?= $stu->getName() ?></td>
+                <td><?= $stu->getAge() ?></td>
+                <td><?= $stu->getGrade() ?></td>
+            </tr>
+        <?php } ?>
             </tbody>
         </table>
     </div>    
@@ -160,4 +164,3 @@ if($_SERVER['REQUEST_METHOD'] == 'POST'){                                      /
 
 </body>
 </html>
-
