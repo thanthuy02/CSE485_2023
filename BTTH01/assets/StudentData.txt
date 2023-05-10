@@ -4,5 +4,4 @@ id,name,age,grade
 3,Michael Johnson,11,5
 4,Emily Davis,12,6
 5,James Rodriguez,14,8
-6,momo,15,9
-7,momo,15,8
+7,aaa,10,7
