@@ -26,8 +26,8 @@ if($_SERVER['REQUEST_METHOD'] == 'POST'){                                      /
     
     // Create error messages
     $exists = false;                                                           // duplicate state variable
-    for($i = 0; $i < count($students); $i++){
-        if($students[$i]['id'] == $_POST['id']){                               // duplicate check
+    foreach ($students as $st){
+        if($st->getId() == $_POST['id']){
             $exists = true;
             break;
         }
@@ -85,7 +85,7 @@ if($_SERVER['REQUEST_METHOD'] == 'POST'){                                      /
 <body>
     <h1>Create Students</h1>
     <!-- Start: Student creation form -->
-    <form action="" method="post">
+    <form action="index.php" method="post">
         <div class="info">
             <div class="left">
                 <!-- id -->
