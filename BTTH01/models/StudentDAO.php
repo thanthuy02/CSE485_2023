@@ -1,10 +1,10 @@
 <?php
-include 'Student.php';
+require_once 'Student.php';
 class StudentDAO {
     public array $students;
 
-    public function __construct(array $students){
-        $this -> students[] = $student;
+    public function __construct(){
+        $this -> students = array();
     }
 
     // create a student
