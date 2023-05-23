@@ -1,0 +1,42 @@
+1. Student (Bảng sinh viên) -> lưu thông tin của sinh viên
+- stdID: mã sinh viên - khóa chính
+- stdName: tên sinh viên
+- stdClass: lớp quản lý
+- stdEmail: email của sinh viên
+- stdPhone: (thông tin liên hệ) số điện thoại của sinh viên
+- accID: mã tài khoản đăng nhập - khóa ngoại liên kết với bảng tài khoản (Account)
+
+2. Instructor (Bảng giảng viên) -> lưu thông tin của giảng viên
+- instID: mã giảng viên - khóa chính
+- instName: tên giảng viên
+- instEmail: email của giảng viên
+- instPhone: (thông tin liên hệ) số điện thoại của giảng viên
+- accID: mã tài khoản đăng nhập - khóa ngoại liên kết với bảng tài khoản (Account)
+
+4. Subject -> lưu thông tin các lớp học phần của mỗi khóa học
+- subjID: mã học phần - khóa chính
+- subjName: tên học phần
+- semester: học phần này thuộc học kì mấy
+- period: giai đoạn mấy của học kì trên
+
+5. Assignment (Bảng phân công) -> lưu thông tin phân công giảng dạy của giảng viên với các lớp học phần
+- instID: mã giảng viên - khóa ngoại liên kết với bảng giảng viên (giangvien)
+- subjID: mã học phần - khóa ngoại liên kết với bảng học phần (hocphan)
+- startDate: ngày bắt đầu mà giảng viên dạy lớp học phần đó
+- endDate: ngày kết thúc lớp học phần mà giảng viên đang dạy
+=> (instID, subjID) là khóa chính
+
+6. Attendance (Bảng điểm danh) -> lưu trạng thái điểm danh của mỗi sinh viên với từng lớp học phần mà sinh viên đó theo học
+- stdID: mã sinh viên - khóa ngoại liên kết với bảng sinh viên (sinhvien)
+- subjID: mã học phần - khóa ngoại liên kết với bảng học phần (hocphan)
+- dateAttend: ngày điểm danh 
+- state: trạng thái điểm danh (present, absent) - kiểu boolean => 0: absent - default, 1: present
+=> (stdID, subjID) => khóa chính 
+
+7. Account (Bảng tài khoản) -> lưu tên, mật khẩu người dùng
+- accID: mã tài khoản - khóa chính
+- email: tên đăng nhập của người dùng (là email của người dùng)
+- passwordAcc: mật khẩu của người dùng (123456)
+- role: đăng nhập với vai trò là sinh viên hay là giảng viên (varchar)
+
+
