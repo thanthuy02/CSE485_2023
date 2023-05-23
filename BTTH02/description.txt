@@ -13,7 +13,7 @@
 - instPhone: (thông tin liên hệ) số điện thoại của giảng viên
 - accID: mã tài khoản đăng nhập - khóa ngoại liên kết với bảng tài khoản (Account)
 
-4. Subject -> lưu thông tin các lớp học phần của mỗi khóa học
+4. Subject -> lưu thông tin các lớp học phần 
 - subjID: mã học phần - khóa chính
 - subjName: tên học phần
 - semester: học phần này thuộc học kì mấy
