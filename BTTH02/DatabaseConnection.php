@@ -1,10 +1,10 @@
 <?php
 class DatabaseConnection {
     private $host = 'localhost';
-    private $dbname = 'attendance_management';
+    private $dbname = 'attendance-management';
     private $port     = '3306'; 
     private $username = 'root';
-    private $password = '127';
+    private $password = '0210';
     private $connection;
 
     public function __construct() {
