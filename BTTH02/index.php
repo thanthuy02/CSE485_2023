@@ -1,4 +1,8 @@
 <?php
+    // Hien thi loi
+    // ini_set('display_errors', 1);
+    // error_reporting(E_ALL);
+
     $controller = isset($_GET['controller']) ? $_GET['controller'] : 'login';
     $action = isset($_GET['action']) ? $_GET['action'] : 'index';
     
@@ -14,7 +18,7 @@
     }
     //Nếu có tồn tại tệp Controller
     require($controllerPath);
-    // Bước 03: Khởi tạo đối tượng tương ứng của Controller và gọi hàm xử lý Action
+
     $myObj = new $controller();
     $myObj->$action();
 ?>
