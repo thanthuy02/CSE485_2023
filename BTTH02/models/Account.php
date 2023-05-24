@@ -1,7 +1,7 @@
 <?php
 require_once 'DatabaseConnection.php';
 
-class AccountModel {
+class Account {
     private $accID;
     private $email;
     private $password;

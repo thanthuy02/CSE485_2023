@@ -1,16 +1,19 @@
 <?php
-require_once 'models/AccountModel.php';
+require_once 'models/Account.php';
 require_once 'services/AuthenticationService.php';
 
 class LoginController {
     private $authenticationService;
 
     public function __construct() {
-        $accountModel = new AccountModel();
-        $this->authenticationService = new AuthenticationService($accountModel);
+        $account = new Account();
+        $this->authenticationService = new AuthenticationService($account);
+        session_start();
+        
     }
 
     public function index() {
+
         // Load view đăng nhập và truyền các biến cần thiết
         $error = isset($_GET['error']) ? $_GET['error'] : '';
         require 'views/login.php';
@@ -25,6 +28,9 @@ class LoginController {
             try {
                 // Xác thực thông qua service
                 $user = $this->authenticationService->authenticate($email, $password);
+
+                // Lưu accID vào session
+                $_SESSION['accID'] = $user['accID'];    
                 // Chuyển hướng người dùng đến trang tương ứng với role
                 if ($user['role'] === 'instructor') {
                     // Chuyển hướng đến trang admin
