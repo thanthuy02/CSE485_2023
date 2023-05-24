@@ -1,5 +1,5 @@
 <?php
-require_once 'models/AccountModel.php';
+require_once 'models/Account.php';
 require_once 'services/AuthenticationService.php';
 
 class LoginController {
@@ -8,6 +8,7 @@ class LoginController {
     public function __construct() {
         $accountModel = new AccountModel();
         $this->authenticationService = new AuthenticationService($accountModel);
+        session_start(); // Khởi động phiên ở constructor
     }
 
     public function index() {
@@ -25,14 +26,17 @@ class LoginController {
             try {
                 // Xác thực thông qua service
                 $user = $this->authenticationService->authenticate($email, $password);
+                // Lưu accID vào session
+                $_SESSION['accID'] = $user['accID'];
+
                 // Chuyển hướng người dùng đến trang tương ứng với role
                 if ($user['role'] === 'instructor') {
-                    // Chuyển hướng đến trang admin
-                    header('Location: ?controller=instructor');
+                         // Chuyển hướng đến trang admin
+                    header('Location: ?controller=instructor' );
                     exit;
                 } else {
                     // Chuyển hướng đến trang user
-                    header('Location: ?controller=student');
+                    header('Location: ?controller=student' );
                     exit;
                 }
 
