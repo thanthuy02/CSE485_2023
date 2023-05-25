@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Home</title>
+    <title>Attendance Management</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
     <style>
@@ -93,7 +93,7 @@
             </div>
             <div class="col-md-10">	
                 <div>
-                    <h3 class="my-3">Assigned Class</h3>
+                    <h3 class="my-3">Attendance Management</h3>
                 </div>
                 <div class="content">
                 
@@ -103,24 +103,22 @@
                                 <th scope="col">NO.</th>
                                 <th scope="col">ID</th>
                                 <th scope="col">Name</th>
-                                <th scope="col">Semester</th>
-                                <th scope="col">Period</th>
-                                <th scope="col">Details</th>
+                                <th scope="col">Class</th>
+                                <th scope="col">State</th>
                             </tr>
                         </thead>
                         <tbody>
                         <?php 
                             $stt = 0;
-                            foreach ($subjects as $subject) {?>
+                            foreach ($attendList as $attend) {?>
                                 <tr>
                                     <td scope="row"><?= $stt + 1?></td> 
-                                    <td><?= $subject->getSubjID();?></td>
-                                    <td><?= $subject->getSubjName();?></td>
-                                    <td><?= $subject->getSemester();?></td>
-                                    <td><?= $subject->getPeriod();?></td>
-                                    <td>
-                                        <a href="?controller=instructor&action=getStudent&subjName=<?= $subject->getSubjName();?>&semester=<?= $subject->getSemester();?>&period=<?= $subject->getPeriod();?>">Show</a>
-                                    </td>
+                                    <td><?= $attend['stdID'];?></td>
+                                    <td><?= $attend['stdName'];?></td>
+                                    <td><?= $attend['stdClass'];?></td>
+                                    <td><?= $attend['state'];?></td>
+                                
+                                    
                                 </tr>
                             <?php 
                             $stt++;

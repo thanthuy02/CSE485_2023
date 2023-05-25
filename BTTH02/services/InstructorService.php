@@ -1,5 +1,5 @@
 <?php
-require_once 'DatabaseConnection.php';
+require_once './libs/DatabaseConnection.php';
 require_once 'models/Instructor.php';
 require_once 'models/Subject.php';
 session_start();
@@ -80,6 +80,7 @@ class InstructorService {
 
       //truy vấn dl
       try {
+         // lấy thông tin của sinh viên
          $sql = "SELECT DISTINCT a.stdID, s.stdName, s.stdClass
                  FROM attendance AS a 
                  JOIN student AS s ON a.stdID = s.stdID";
@@ -95,5 +96,52 @@ class InstructorService {
           echo "Lỗi truy vấn cơ sở dữ liệu: " . $e->getMessage();
        }
    }
+
+   // // lấy ngày điểm danh 
+   // public function getDateAttend() {
+   //    // kết nối DB
+   //    $dbConnection = new DatabaseConnection();
+   //    $conn = $dbConnection->getConnection();
+
+   //    //truy vấn dl
+   //    try {
+   //       $sql = "SELECT DISTINCT dateAttend FROM attendance; ";
+   //       $stmt = $conn->query($sql);
+
+   //        // trả về dl
+   //        $dateAttend = $stmt->fetchAll();
+   //        return $dateAttend;
+
+   //     } catch (PDOException $e) {
+   //        echo "Lỗi truy vấn cơ sở dữ liệu: " . $e->getMessage();
+   //     }
+   // }
+
+   // lấy danh sách sinh viên điểm danh theo ngày và lớp học phần
+   public function getAttendance(){
+      // kết nối DB
+      $dbConnection = new DatabaseConnection();
+      $conn = $dbConnection->getConnection();
+      
+      // truy vấn dl
+      try {
+         $sql = "SELECT a.stdID, s.stdName, s.stdClass, a.state
+                 FROM attendance AS a
+                 JOIN student AS s ON a.stdID = s.stdID
+                 WHERE a.subjID = ? AND a.dateAttend = ?;";
+         $stmt->bindValue(1, $GET['subject']);
+         $stmt->bindValue(2, $GET['date']);
+         
+         $stmt->execute();
+
+         // trả về dl
+         $attendList = $stmt->fetchAll();
+         return $attendList; 
+
+      }catch (PDOException $e){
+         echo "Lỗi truy vấn cơ sở dữ liệu: " . $e->getMassage();
+      }
+   }
+
      
 }

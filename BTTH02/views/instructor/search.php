@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Home</title>
+    <title>Attendance Management</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
     <style>
@@ -82,7 +82,7 @@
                     </li>
 
                     <li>
-                        <a class="menu-item" href="?controller=instructor&action=search">
+                        <a class="menu-item" href="?controller=instructor&action=getAttendance">
                                 <span>Attendance Management</span>
                         </a>
                     </li>
@@ -93,40 +93,29 @@
             </div>
             <div class="col-md-10">	
                 <div>
-                    <h3 class="my-3">Assigned Class</h3>
+                    <h3 class="my-3">Search</h3>
                 </div>
-                <div class="content">
-                
-                    <table class="table table-bordered">
-                        <thead class="text-white" style="background-color: rgb(0, 28, 64);">
-                            <tr>
-                                <th scope="col">NO.</th>
-                                <th scope="col">ID</th>
-                                <th scope="col">Name</th>
-                                <th scope="col">Semester</th>
-                                <th scope="col">Period</th>
-                                <th scope="col">Details</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                        <?php 
-                            $stt = 0;
-                            foreach ($subjects as $subject) {?>
-                                <tr>
-                                    <td scope="row"><?= $stt + 1?></td> 
-                                    <td><?= $subject->getSubjID();?></td>
-                                    <td><?= $subject->getSubjName();?></td>
-                                    <td><?= $subject->getSemester();?></td>
-                                    <td><?= $subject->getPeriod();?></td>
-                                    <td>
-                                        <a href="?controller=instructor&action=getStudent&subjName=<?= $subject->getSubjName();?>&semester=<?= $subject->getSemester();?>&period=<?= $subject->getPeriod();?>">Show</a>
-                                    </td>
-                                </tr>
-                            <?php 
-                            $stt++;
-                        }; ?>
-                        </tbody>
-                    </table>
+                <div>
+                    <form action="?controller=instructor&action=getAttendList" method="GET">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <label for="subject" class="form-label">Subject</label>
+                                <select class="form-select" aria-label="" name="subject">
+                                    <option selected>Subject</option>
+                                    <?php foreach ($subjects as $subject) { ?>
+                                        <option value="<?= $subject->getSubjID(); ?>"> <?= $subject->getSubjName(); ?> </option>
+                                    <?php }; ?>
+                                </select>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="date" class="form-label">Date</label>
+                                <input type="date" name="date" id="date">
+                            </div>
+                        </div>
+                        <div>
+                            <input type="submit" value="OK" class="btn btn-success">
+                        </div>
+                    </form>
                 </div>
             </div>
         </div>
