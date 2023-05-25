@@ -1,5 +1,4 @@
 <?php
-
 class Instructor {
     private $instID;
     private $instName;

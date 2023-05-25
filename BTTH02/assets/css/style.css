@@ -126,35 +126,4 @@ form input[type="submit"]:hover{
 }
 
 
-/* views/instructor/index.php */
-h1 {
 
-  text-align: center;
-  margin-top: 50px;
-}
-
-  /* .content {
-    display: block;
-  max-width: 1000px;
-  margin: 0 auto;
-  padding: 20px;
-  background-color: #fff;
-  border: 1px solid #ccc;
-  border-radius: 5px;
-  }
-
-  .content table {
-  width: 100%;
-  border-collapse: collapse;
-  margin-top: 10px;
-  }
-
-  .content th, td {
-  padding: 10px;
-  border: 1px solid #ccc;
-  }
-
-  .content th {
-  background-color: #f1f1f1;
-  text-align: left;
-  } */
