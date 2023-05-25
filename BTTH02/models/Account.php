@@ -1,16 +1,17 @@
 <?php
-require_once 'DatabaseConnection.php';
-
 class Account {
     private $accID;
     private $email;
     private $password;
     private $role;
-    private $db;
 
-    public function __construct() {
-        $dbConnection = new DatabaseConnection();
-        $this->db = $dbConnection->getConnection();
+
+    public function __construct($accID, $email,$password, $role) {
+        $this->accID = $accID;
+        $this->email = $email;
+        $this->password = $password;
+        $this->role = $role;
+
     }
 
     public function getAccID() {
@@ -44,15 +45,5 @@ class Account {
     public function setRole($role) {
         $this->role = $role;
     }
-
-    public function getUserByEmail($email) {
-        $query = "SELECT * FROM account WHERE email = :email";
-        $stmt = $this->db->prepare($query);
-        $stmt->bindValue(':email', $email);
-        $stmt->execute();
-        return $stmt->fetch(PDO::FETCH_ASSOC);
-    }
-
-
 }
 ?>

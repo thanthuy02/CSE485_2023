@@ -6,8 +6,7 @@ class LoginController {
     private $authenticationService;
 
     public function __construct() {
-        $account = new Account();
-        $this->authenticationService = new AuthenticationService($account);
+        $this->authenticationService = new AuthenticationService();
         session_start();
         
     }
@@ -25,6 +24,8 @@ class LoginController {
             $email = $_POST['email'];
             $password = $_POST['password'];
 
+
+
             try {
                 // Xác thực thông qua service
                 $user = $this->authenticationService->authenticate($email, $password);
@@ -33,11 +34,11 @@ class LoginController {
                 $_SESSION['accID'] = $user['accID'];    
                 // Chuyển hướng người dùng đến trang tương ứng với role
                 if ($user['role'] === 'instructor') {
-                    // Chuyển hướng đến trang admin
+                    // Chuyển hướng đến trang instructor
                     header('Location: ?controller=instructor');
                     exit;
                 } else {
-                    // Chuyển hướng đến trang user
+                    // Chuyển hướng đến trang student
                     header('Location: ?controller=student');
                     exit;
                 }
