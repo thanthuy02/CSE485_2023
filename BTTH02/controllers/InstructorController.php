@@ -18,28 +18,21 @@ class InstructorController {
          $instructor = $instructorService->getInfo();
          $students = $instructorService->getStudent();
          // làm việc với view
-         include('views/instructor/studentList.php');
+         include('views/instructor/student_list.php');
     }
 
-    public function search(){
-        // làm việc với service
-        $instructorService = new InstructorService();
-        $subjects = $instructorService->getSubject();
-        $instructor = $instructorService->getInfo();
-        // làm việc với view
-        include('views/instructor/search.php');
-   }
+    
 
     public function getAttendList(){
         // làm việc với service
         $instructorService = new InstructorService();
-        $subjects = $instructorService->getSubject();
+        //$subjects = $instructorService->getSubject();
         $instructor = $instructorService->getInfo();
-        //$dateAttends = $instructorService->getDateAttend();
+        $dateAttends = $instructorService->getDateAttend();
         $attendList = $instructorService->getAttendance();
+        $students = $instructorService->getStudent();
         // làm việc với view
-        include('views/instructor/attendList.php');
+        include('views/instructor/attend_list.php');
     }
-
 
 }

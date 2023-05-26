@@ -39,7 +39,6 @@
     position: relative;
     display: flex;
     align-items: center;
-    margin-bottom: 10px;
     padding: 15px;
     font-size: 1.08em;
     color: white;
@@ -77,23 +76,15 @@
                 <ul class="menu">
                     <li>
                         <a class="menu-item" href="?controller=instructor">
-                            <span>Assigned Class</span>
+                            <span>Attendance Management</span>
                         </a>
                     </li>
-
-                    <li>
-                        <a class="menu-item" href="?controller=instructor&action=search">
-                                <span>Attendance Management</span>
-                        </a>
-                    </li>
-
-                 
                 </ul>
             </div>
             </div>
             <div class="col-md-10">	
                 <div>
-                    <h3 class="my-3">Assigned Class</h3>
+                    <h3 class="my-3 text-center">Assigned Class</h3>
                 </div>
                 <div class="content">
                 
@@ -106,6 +97,7 @@
                                 <th scope="col">Semester</th>
                                 <th scope="col">Period</th>
                                 <th scope="col">Details</th>
+                                <th scope="col">Attend List</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -119,7 +111,10 @@
                                     <td><?= $subject->getSemester();?></td>
                                     <td><?= $subject->getPeriod();?></td>
                                     <td>
-                                        <a href="?controller=instructor&action=getStudent&subjName=<?= $subject->getSubjName();?>&semester=<?= $subject->getSemester();?>&period=<?= $subject->getPeriod();?>">Show</a>
+                                        <a href="?controller=instructor&action=getStudent&subjID=<?= $subject->getSubjID(); ?>&subjName=<?= $subject->getSubjName();?>&semester=<?= $subject->getSemester();?>&period=<?= $subject->getPeriod();?>">Show</a>
+                                    </td>
+                                    <td>
+                                        <a href="?controller=instructor&action=getAttendList&subjID=<?= $subject->getSubjID(); ?> &subjName=<?= $subject->getSubjName();?>">Show</a>
                                     </td>
                                 </tr>
                             <?php 

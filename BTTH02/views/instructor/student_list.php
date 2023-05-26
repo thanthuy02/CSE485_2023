@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Attendance Management</title>
+    <title>Student List</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
     <style>
@@ -39,7 +39,6 @@
     position: relative;
     display: flex;
     align-items: center;
-    margin-bottom: 10px;
     padding: 15px;
     font-size: 1.08em;
     color: white;
@@ -65,7 +64,7 @@
             <div class="sidebar">
                 <!--instructor information-->
                 <div class="text-light text-center p-2">
-                    <img class="avt" src="./assets/images/admin.jpg" alt="">
+                    <img class="avt" src="../assets/images/admin.jpg" alt="">
                     <div>
                         <p class="username"><b><?= $instructor->getInstName(); ?></b></p>
                         <p class="position">Instructor</p>
@@ -77,23 +76,19 @@
                 <ul class="menu">
                     <li>
                         <a class="menu-item" href="?controller=instructor">
-                            <span>Assigned Class</span>
+                            <span>Attendance Management</span>
                         </a>
                     </li>
-
-                    <li>
-                        <a class="menu-item" href="?controller=instructor&action=search">
-                                <span>Attendance Management</span>
-                        </a>
-                    </li>
-
-                 
                 </ul>
             </div>
             </div>
             <div class="col-md-10">	
-                <div>
-                    <h3 class="my-3">Attendance Management</h3>
+                <div class="my-3">
+                    <h3 class="text-center my-3">Student List</h3>
+                    <p><b>Subject: </b> <?= $_GET['subjName']; ?><p>
+                    <p><b>Semester: </b> <?= $_GET['semester']; ?> - <b>Period: </b> <?= $_GET['period']; ?><p>
+                    <p><b>Student total: </b> <?= count($students) ?><p>
+
                 </div>
                 <div class="content">
                 
@@ -104,21 +99,25 @@
                                 <th scope="col">ID</th>
                                 <th scope="col">Name</th>
                                 <th scope="col">Class</th>
-                                <th scope="col">State</th>
+                                <th scope="col">Update</th>
+                                <th scope="col">Delete</th>
                             </tr>
                         </thead>
                         <tbody>
                         <?php 
                             $stt = 0;
-                            foreach ($attendList as $attend) {?>
+                            foreach ($students as $student) {?>
                                 <tr>
                                     <td scope="row"><?= $stt + 1?></td> 
-                                    <td><?= $attend['stdID'];?></td>
-                                    <td><?= $attend['stdName'];?></td>
-                                    <td><?= $attend['stdClass'];?></td>
-                                    <td><?= $attend['state'];?></td>
-                                
-                                    
+                                    <td><?= $student['stdID'];?></td>
+                                    <td><?= $student['stdName'];?></td>
+                                    <td><?= $student['stdClass'];?></td>
+                                    <td>
+                                        <a href="?controller=instructor&action=updateStudent&stdID=<?=$student['stdID'];?>"><i class="bi bi-pencil-square"></i></a>
+                                    </td>
+                                    <td>
+                                        <a href="?controller=instructor&action=deleteStudent&stdID=<?=$student['stdID'];?>"><i class="bi bi-trash3-fill"></i></a>
+                                    </td>
                                 </tr>
                             <?php 
                             $stt++;

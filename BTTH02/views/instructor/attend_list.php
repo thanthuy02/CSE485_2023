@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Student List</title>
+    <title>Attendance Management</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
     <style>
@@ -39,7 +39,6 @@
     position: relative;
     display: flex;
     align-items: center;
-    margin-bottom: 10px;
     padding: 15px;
     font-size: 1.08em;
     color: white;
@@ -65,7 +64,7 @@
             <div class="sidebar">
                 <!--instructor information-->
                 <div class="text-light text-center p-2">
-                    <img class="avt" src="../assets/images/admin.jpg" alt="">
+                    <img class="avt" src="./assets/images/admin.jpg" alt="">
                     <div>
                         <p class="username"><b><?= $instructor->getInstName(); ?></b></p>
                         <p class="position">Instructor</p>
@@ -77,25 +76,17 @@
                 <ul class="menu">
                     <li>
                         <a class="menu-item" href="?controller=instructor">
-                            <span>Assigned Class</span>
+                            <span>Attendance Management</span>
                         </a>
                     </li>
-
-                    <li>
-                        <a class="menu-item" href="?controller=instructor&action=add">
-                                <span>Attendance Management</span>
-                        </a>
-                    </li>
-
-                 
                 </ul>
             </div>
             </div>
             <div class="col-md-10">	
-                <div class="my-3">
-                    <h3>Student List</h3>
+                <div>
+                    <h3 class="my-3 text-center">Attendance List</h3>
                     <p><b>Subject: </b> <?= $_GET['subjName']; ?><p>
-                    <p><b>Semester: </b> <?= $_GET['semester']; ?> - <b>Period: </b> <?= $_GET['period']; ?><p>
+                    <p><b>Student total: </b> <?= count($students) ?><p>
 
                 </div>
                 <div class="content">
@@ -107,8 +98,10 @@
                                 <th scope="col">ID</th>
                                 <th scope="col">Name</th>
                                 <th scope="col">Class</th>
-                                <th scope="col">Update</th>
-                                <th scope="col">Delete</th>
+                                <?php foreach ($dateAttends as $date)  {?>
+                                    <th scope="col"><?= $date['dateAttend']  ?></th>
+                                <?php } ?>
+                        
                             </tr>
                         </thead>
                         <tbody>
@@ -116,20 +109,37 @@
                             $stt = 0;
                             foreach ($students as $student) {?>
                                 <tr>
-                                    <td scope="row"><?= $stt + 1?></td> 
-                                    <td><?= $student['stdID'];?></td>
-                                    <td><?= $student['stdName'];?></td>
-                                    <td><?= $student['stdClass'];?></td>
-                                    <td>
-                                        <a href="?controller=instructor&action=updateStudent&stdID=<?=$student['stdID'];?>"><i class="bi bi-pencil-square"></i></a>
-                                    </td>
-                                    <td>
-                                        <a href="?controller=instructor&action=deleteStudent&stdID=<?=$student['stdID'];?>"><i class="bi bi-trash3-fill"></i></a>
-                                    </td>
-                                </tr>
+                                <td scope="row"><?= $stt + 1?></td> 
+                                <td><?= $student['stdID'];?></td>
+                                <td><?= $student['stdName'];?></td>
+                                <td><?= $student['stdClass'];?></td>
+                            <?php foreach ($attendList as $attend) {
+                                    if($student['stdID'] == $attend['stdID']) {
+                                ?>
+                                        <td><?= $attend['state'];?></td>
+                              
                             <?php 
-                            $stt++;
-                        }; ?>
+                                    }}?>
+                                    </tr>
+                            <?php $stt++; }?>
+
+                            <tr>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <?php 
+                                    $absent = 0;
+                                    foreach ($dateAttends as $date) {
+                                        $dt = $date['dateAttend'];
+                                        foreach ($attendList as $attend) {
+                                            if($dt == $attend['dateAttend'] && $attend['state'] == 0) {
+                                                $absent++;
+                                            }
+                                        }?>
+                                        <td>Absent: <?= $absent ;?></td>
+                                <?php $absent = 0; }?>
+                            </tr>
                         </tbody>
                     </table>
                 </div>
