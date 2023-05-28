@@ -1,14 +1,25 @@
 <?php
-class AuthenticationService {
-    private $accountModel;
+require_once './libs/DatabaseConnection.php';
 
-    public function __construct($accountModel) {
-        $this->accountModel = $accountModel;
+class AuthenticationService {
+    public function __construct() {
+  
     }
+
+    public function getUserByEmail($email) {
+        $dbConn = new DatabaseConnection();
+        $conn = $dbConn->getConnection();
+        $query = "SELECT * FROM account WHERE email = :email";
+        $stmt = $conn->prepare($query);
+        $stmt->bindValue(':email', $email);
+        $stmt->execute();
+        return $stmt->fetch(PDO::FETCH_ASSOC);
+    }
+    
 
     public function authenticate($email, $password) {
         // Kiểm tra xem người dùng có tồn tại trong cơ sở dữ liệu không
-        $user = $this->accountModel->getUserByEmail($email);
+        $user = $this->getUserByEmail($email);
         if ($user) {
             // Xác thực mật khẩu
             if ($password === $user['passwordAcc']) {

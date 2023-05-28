@@ -12,7 +12,12 @@
 /*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
--- Dumping structure for table btth02.account
+
+-- Dumping database structure for attendance-management
+CREATE DATABASE IF NOT EXISTS `attendance-management` /*!40100 DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci */;
+USE `attendance-management`;
+
+-- Dumping structure for table attendance-management.account
 CREATE TABLE IF NOT EXISTS `account` (
   `accID` varchar(50) NOT NULL,
   `email` varchar(50) DEFAULT NULL,
@@ -21,8 +26,7 @@ CREATE TABLE IF NOT EXISTS `account` (
   PRIMARY KEY (`accID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
--- Dumping data for table btth02.account: ~4 rows (approximately)
-DELETE FROM `account`;
+-- Dumping data for table attendance-management.account: ~4 rows (approximately)
 /*!40000 ALTER TABLE `account` DISABLE KEYS */;
 INSERT INTO `account` (`accID`, `email`, `passwordAcc`, `role`) VALUES
 	('inst01', 'thichthihoc@ktz.edu.vn', 'cse2023', 'instructor'),
@@ -31,22 +35,25 @@ INSERT INTO `account` (`accID`, `email`, `passwordAcc`, `role`) VALUES
 	('std03', 'gvasyuchov2@wordpress.org', 'cse2023', 'student');
 /*!40000 ALTER TABLE `account` ENABLE KEYS */;
 
--- Dumping structure for table btth02.assignment
+-- Dumping structure for table attendance-management.assignment
 CREATE TABLE IF NOT EXISTS `assignment` (
   `instID` int(11) NOT NULL,
   `subjID` int(11) NOT NULL,
   `startDate` date NOT NULL,
-  `endDate` date NOT NULL
+  `endDate` date NOT NULL,
+  KEY `instID` (`instID`),
+  KEY `subjID` (`subjID`),
+  CONSTRAINT `instID` FOREIGN KEY (`instID`) REFERENCES `instructor` (`instID`),
+  CONSTRAINT `subjID` FOREIGN KEY (`subjID`) REFERENCES `subject` (`subjID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
--- Dumping data for table btth02.assignment: ~1 rows (approximately)
-DELETE FROM `assignment`;
+-- Dumping data for table attendance-management.assignment: ~1 rows (approximately)
 /*!40000 ALTER TABLE `assignment` DISABLE KEYS */;
 INSERT INTO `assignment` (`instID`, `subjID`, `startDate`, `endDate`) VALUES
 	(1, 1, '2023-04-01', '2023-06-01');
 /*!40000 ALTER TABLE `assignment` ENABLE KEYS */;
 
--- Dumping structure for table btth02.attendance
+-- Dumping structure for table attendance-management.attendance
 CREATE TABLE IF NOT EXISTS `attendance` (
   `stdID` int(11) DEFAULT NULL,
   `subjID` int(11) DEFAULT NULL,
@@ -58,8 +65,7 @@ CREATE TABLE IF NOT EXISTS `attendance` (
   CONSTRAINT `attendance_ibfk_2` FOREIGN KEY (`subjID`) REFERENCES `subject` (`subjID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
--- Dumping data for table btth02.attendance: ~9 rows (approximately)
-DELETE FROM `attendance`;
+-- Dumping data for table attendance-management.attendance: ~9 rows (approximately)
 /*!40000 ALTER TABLE `attendance` DISABLE KEYS */;
 INSERT INTO `attendance` (`stdID`, `subjID`, `dateAttend`, `state`) VALUES
 	(1, 1, '2023-04-01', 0),
@@ -73,24 +79,25 @@ INSERT INTO `attendance` (`stdID`, `subjID`, `dateAttend`, `state`) VALUES
 	(3, 1, '2023-04-15', 0);
 /*!40000 ALTER TABLE `attendance` ENABLE KEYS */;
 
--- Dumping structure for table btth02.instructor
+-- Dumping structure for table attendance-management.instructor
 CREATE TABLE IF NOT EXISTS `instructor` (
   `instID` int(11) NOT NULL AUTO_INCREMENT,
   `instName` varchar(50) DEFAULT NULL,
   `instEmail` varchar(50) DEFAULT NULL,
   `instPhone` char(15) DEFAULT NULL,
   `accID` varchar(50) DEFAULT NULL,
-  PRIMARY KEY (`instID`)
+  PRIMARY KEY (`instID`),
+  KEY `accID` (`accID`),
+  CONSTRAINT `accID` FOREIGN KEY (`accID`) REFERENCES `account` (`accID`)
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
--- Dumping data for table btth02.instructor: ~1 rows (approximately)
-DELETE FROM `instructor`;
+-- Dumping data for table attendance-management.instructor: ~1 rows (approximately)
 /*!40000 ALTER TABLE `instructor` DISABLE KEYS */;
 INSERT INTO `instructor` (`instID`, `instName`, `instEmail`, `instPhone`, `accID`) VALUES
 	(1, 'Dung Kieu Tuan', 'thichthihoc@ktz.edu.vn', '999989071', 'inst01');
 /*!40000 ALTER TABLE `instructor` ENABLE KEYS */;
 
--- Dumping structure for table btth02.student
+-- Dumping structure for table attendance-management.student
 CREATE TABLE IF NOT EXISTS `student` (
   `stdID` int(11) NOT NULL AUTO_INCREMENT,
   `stdName` varchar(50) DEFAULT NULL,
@@ -101,8 +108,7 @@ CREATE TABLE IF NOT EXISTS `student` (
   PRIMARY KEY (`stdID`)
 ) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
--- Dumping data for table btth02.student: ~3 rows (approximately)
-DELETE FROM `student`;
+-- Dumping data for table attendance-management.student: ~3 rows (approximately)
 /*!40000 ALTER TABLE `student` DISABLE KEYS */;
 INSERT INTO `student` (`stdID`, `stdName`, `stdClass`, `stdEmail`, `stdPhone`, `accID`) VALUES
 	(1, 'Alana Rankling', '62THNB', 'arankling0@sakura.ne.jp', '9778289071', 'std01'),
@@ -110,7 +116,7 @@ INSERT INTO `student` (`stdID`, `stdName`, `stdClass`, `stdEmail`, `stdPhone`, `
 	(3, 'Ginevra Vasyuchov', '62THNB', 'gvasyuchov2@wordpress.org', '215441458', 'std03');
 /*!40000 ALTER TABLE `student` ENABLE KEYS */;
 
--- Dumping structure for table btth02.subject
+-- Dumping structure for table attendance-management.subject
 CREATE TABLE IF NOT EXISTS `subject` (
   `subjID` int(11) NOT NULL AUTO_INCREMENT,
   `subjName` varchar(50) DEFAULT NULL,
@@ -119,8 +125,7 @@ CREATE TABLE IF NOT EXISTS `subject` (
   PRIMARY KEY (`subjID`)
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
--- Dumping data for table btth02.subject: ~1 rows (approximately)
-DELETE FROM `subject`;
+-- Dumping data for table attendance-management.subject: ~0 rows (approximately)
 /*!40000 ALTER TABLE `subject` DISABLE KEYS */;
 INSERT INTO `subject` (`subjID`, `subjName`, `semester`, `period`) VALUES
 	(1, 'Cong nghe web 6-22 (62THNB, 62TH1)', 6, 2);
