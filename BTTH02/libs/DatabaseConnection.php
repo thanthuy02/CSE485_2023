@@ -1,6 +1,7 @@
 <?php
 require_once './config/config.php';
 class DatabaseConnection {
+
     private $host;
     private $dbname;
     private $port; 
