@@ -2,7 +2,7 @@
 require_once '../app/config/config.php';
 require_once APP_ROOT.'/app/libs/DBConnection.php';
 
-$controller = isset($_GET['controller']) ? $_GET['controller'] : 'home'; 
+$controller = isset($_GET['controller']) ? $_GET['controller'] : 'article'; 
 $action =  isset($_GET['action']) ? $_GET['action'] : 'index';
 
  // Kiểm tra sự tồn tại của tệp controller
