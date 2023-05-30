@@ -59,4 +59,37 @@ class ArticleController {
         $articles = $articleService->getAllArticle();
         include APP_ROOT.'/app/views/article/index.php';
     }
+
+    public function show()
+    {
+        if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+            $term = $_POST['term'];
+
+            $articleService = new ArticleService();
+            $articles = $articleService->showArticle($term);
+    
+            // Truyền kết quả cho view
+            extract(compact('term', 'articles'));
+        }
+    
+        include APP_ROOT . '/app/views/article/show.php';
+    }
+    public function delete() {
+        // Lấy ID bài viết từ tham số truyền vào
+        $id = $_GET['id'];
+
+        // Gọi phương thức xóa bài viết từ service
+        $articleService = new ArticleService();
+        $result = $articleService->deleteArticle($id);
+
+        // Kiểm tra kết quả xóa và thực hiện chuyển hướng hoặc thông báo lỗi
+        if ($result) {
+            // Nếu xóa thành công, chuyển hướng đến trang danh sách bài viết
+            header('Location: /CSE485_2023/BTTH03/article-website/public/index.php');
+        } else {
+            // Nếu xóa thất bại, hiển thị thông báo lỗi
+            echo "Failed to delete the article.";
+        }
+    }
+    
 }
