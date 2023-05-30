@@ -6,12 +6,13 @@ class LoginController {
     private $authenticationService;
 
     public function __construct() {
-        $accountModel = new AccountModel();
-        $this->authenticationService = new AuthenticationService($accountModel);
-        session_start(); // Khởi động phiên ở constructor
+        $this->authenticationService = new AuthenticationService();
+        session_start();
+        
     }
 
     public function index() {
+
         // Load view đăng nhập và truyền các biến cần thiết
         $error = isset($_GET['error']) ? $_GET['error'] : '';
         require 'views/login.php';
@@ -23,20 +24,22 @@ class LoginController {
             $email = $_POST['email'];
             $password = $_POST['password'];
 
+
+
             try {
                 // Xác thực thông qua service
                 $user = $this->authenticationService->authenticate($email, $password);
-                // Lưu accID vào session
-                $_SESSION['accID'] = $user['accID'];
 
+                // Lưu accID vào session
+                $_SESSION['accID'] = $user['accID'];    
                 // Chuyển hướng người dùng đến trang tương ứng với role
                 if ($user['role'] === 'instructor') {
-                         // Chuyển hướng đến trang admin
-                    header('Location: ?controller=instructor' );
+                    // Chuyển hướng đến trang instructor
+                    header('Location: ?controller=instructor');
                     exit;
                 } else {
                     // Chuyển hướng đến trang user
-                    header('Location: ?controller=student' );
+                    header('Location: ?controller=student');
                     exit;
                 }
 
